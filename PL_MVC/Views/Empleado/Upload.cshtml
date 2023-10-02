@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-ml-12">
+            <h2>Cargar Mediante</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-ml-12">
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="mostrarTXT()">Cargar Mediante TXT</button>
+                <button class="btn btn-warning">Cargar Mediante Excel</button>
+                @Html.ActionLink("Regresar", "GetAll", "Empleado", new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div><br />
+    @using (Html.BeginForm("ReadTXT", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row" id="txt">
+            <div class="col-md-6 text-center">
+                <input type="file" name="File" required />
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-success" value="Cargar">
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function mostrarTXT() {
+        document.getElementById('txt').style.display = 'block';
+    }
+</script>

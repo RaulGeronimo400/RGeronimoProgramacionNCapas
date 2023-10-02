@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://bootswatch.com/3/superhero/bootstrap.min.css">
+    <title>@ViewBag.Title - Usuario</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Usuario CRUD", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <!--ActionLink(Texto, Metodo de Controller, Nombre del Controller) -->
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Usuario", "GetAll", "Usuario")</li>
+                    <li>@Html.ActionLink("Empleado", "GetAll", "Empleado")</li>
+                    @*<li>@Html.ActionLink("Carga Masiva", "Carga", "CargaMasiva")</li>*@
+                    <!--<li>@Html.ActionLink("+", "Form", "Usuario")</li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="https://kit.fontawesome.com/b8aae55bcb.js"></script>
+
+    <script type="text/javascript">
+        //Boton Contraseña
+        function mostrarPassword() {
+            var cambio = document.getElementById("txtPassword");
+            var cambio2 = document.getElementById("txtConfirmPassword");
+            if (cambio.type == "password") {
+                cambio.type = "text";
+                cambio2.type = "text";
+            } else {
+                cambio.type = "password";
+                cambio2.type = "password";
+            }
+        }
+
+        //Imagen
+        function imgPreview(input, id) {
+            if (input.files[0]) {
+                var uploadimg = new FileReader();
+                uploadimg.onload = function (displayimg) {
+                    $("#" + id).attr('src', displayimg.target.result);
+                }
+                uploadimg.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('body').bind('copy paste', function (e) {
+            e.preventDefault(); return false;
+        });
+    </script>
+
+    <style>
+        .margen {
+            /*margin: arriba derecha abajo izquierda*/
+            margin: 2px 10px 10px 0px;
+        }
+
+        img {
+            max-height: 150px;
+        }
+
+        .box {
+            border-radius: 6px !important;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+            .box img {
+                width: 100%;
+                max-height: 250px;
+                object-fit: cover;
+            }
+
+        span {
+            font-weight: bold;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: red;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: green;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px green;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
+</body>
+</html>

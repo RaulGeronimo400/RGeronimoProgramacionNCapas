@@ -1,0 +1,4 @@
+Hubo un error al insertar el Empleado: Ronan Klein Error: No se pudo insertar
+Hubo un error al insertar el Empleado: Stone Bond Error: No se pudo insertar
+Hubo un error al insertar el Empleado: Kyle Pierce Error: No se pudo insertar
+Hubo un error al insertar el Empleado: Linus Roach Error: No se pudo insertar

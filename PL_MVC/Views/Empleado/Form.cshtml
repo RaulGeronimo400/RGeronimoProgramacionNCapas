@@ -1,0 +1,204 @@
+﻿@model ML.Empleado
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <h2>Nuevo Empleado</h2>
+    <p>Ingrese los datos del Empleado</p>
+    <hr>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Form", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <form>
+                <div class="col-md-4">
+                    <!-- IdEmpleado -->
+                    <div class="form-group hidden">
+                        @Html.LabelFor(model => model.IdEmpleado)
+                        @Html.TextBoxFor(model => model.IdEmpleado, new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    <!-- Número Empleado -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NumeroEmpleado)
+                        @Html.TextBoxFor(model => model.NumeroEmpleado, new { @class = "form-control", @placeholder = "Número de Empleado" })
+                    </div>
+
+                    <!-- RFC -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RFC)
+                        @Html.TextBoxFor(model => model.RFC, new { @class = "form-control", @placeholder = "RFC del Empleado", @maxlength = "13" })
+                        @Html.ValidationMessageFor(model => model.RFC, null, new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre)
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @onkeypress = "return ValidarSoloLetras(event, 'lblNombre')", @placeholder = "Nombre(s)" })
+                        @Html.ValidationMessageFor(model => model.Nombre, null, new { @id = "lblNombre", @class = "text-danger" })
+                    </div>
+
+                    <!-- Apellido Paterno -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ApellidoPaterno)
+                        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @onkeypress = "return ValidarSoloLetras(event, 'lblApellidoPaterno')", @placeholder = "Apellido Paterno" })
+                        @Html.ValidationMessageFor(model => model.ApellidoPaterno, null, new { @id = "lblApellidoPaterno", @class = "text-danger" })
+                    </div>
+
+                    <!-- ApellidoMaterno -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ApellidoMaterno)
+                        @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @onkeypress = "return ValidarSoloLetras(event, 'lblApellidoMaterno')", @placeholder = "Apellido Materno" })
+                        @Html.ValidationMessageFor(model => model.ApellidoMaterno, null, new { @id = "lblApellidoMaterno", @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Email -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email)
+                        @Html.TextBoxFor(model => model.Email, new { @id = "txtEmail", @class = "form-control", @onblur = "ValidarCorreo(this.value, 'lblEmail')", @placeholder = "Correo Electronico" })
+                        @Html.ValidationMessageFor(model => model.Email, null, new { @id = "lblEmail", @class = "text-danger" })
+                    </div>
+
+                    <!-- Confirm Email -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ConfirmEmail)
+                        @Html.TextBoxFor(model => model.ConfirmEmail, new { @id = "txtConfirmEmail", @class = "form-control", @onblur = "matchEmail(this.value)", @placeholder = "Correo Electronico" })
+                        @Html.ValidationMessageFor(model => model.ConfirmEmail, null, new { @id = "lblConfirmEmail", @class = "text-danger" })
+                    </div>
+
+                    <!-- Foto -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Foto)
+                        @Html.HiddenFor(model => model.Foto)
+
+                        <input type="file" onchange="imgPreview(this, 'imgEmpleado')" name="imgEmpleado" /><br />
+
+                        <div class="box">
+                            @if (Model.Foto == null)
+                            {
+                                <img id="imgEmpleado" src="~/img/imageNoUsuarioDefault.jpg">
+                            }
+                            else
+                            {
+                                <img id="imgEmpleado" src="data:image/png;base64, @Convert.ToBase64String(Model.Foto)">
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Telefono -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Telefono)
+                        @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", @maxlength = "10", @onkeypress = "return ValidarSoloNumeros(event, 'lblTelefono')", @placeholder = "Telefono de Contacto" })
+                        @Html.ValidationMessageFor(model => model.Telefono, null, new { @id = "lblTelefono", @class = "text-danger" })
+                    </div>
+
+                    <!-- FechaNacimiento -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FechaNacimiento)
+                        @Html.TextBoxFor(model => model.FechaNacimiento, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    </div>
+
+                    <!-- NSS -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NSS)
+                        @Html.TextBoxFor(model => model.NSS, new { @class = "form-control", @maxlength = "11", @onkeypress = "return ValidarSoloNumeros(event, 'lblNSS')", @placeholder = "Número de Seguro Social" })
+                        @Html.ValidationMessageFor(model => model.NSS, null, new { @id = "lblNSS", @class = "text-danger" })
+                    </div>
+
+                    <!-- FechaIngreso -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FechaIngreso)
+                        @Html.TextBoxFor(model => model.FechaIngreso, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    </div>
+
+                    <!-- Empresa -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Empresa)
+                        @Html.DropDownListFor(model => model.Empresa.IdEmpresa, new SelectList(Model.Empresa.Empresas, "IdEmpresa", "Nombre"), "Seleccione una opción", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Empresa.IdEmpresa, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="col-lg-12">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-success">Aceptar</button>
+
+                        @Html.ActionLink("Regresar", "GetAll", "Empleado", new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+
+<!-- Script -->
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<!-- Validaciones -->
+<script>
+    // SOLO LETRAS
+    function ValidarSoloLetras(event, controlId) {
+        var letra = event.key;
+        var regexLetters = /^[a-zA-ZÀ-ÿ\s]*$/;
+        if (regexLetters.test(letra)) {
+            $('#' + controlId).text("");
+            return true;
+        } else {
+            $('#' + controlId).text("Solo acepta letras");
+            $('#' + controlId).css({ "color": "red" });
+            return false;
+        }
+    }
+
+    // SOLO NUMEROS
+    function ValidarSoloNumeros(event, controlId) {
+        var letra = event.key;
+        var regexLetters = /^[0-9]+$/;
+        if (regexLetters.test(letra)) {
+            $('#' + controlId).text("");
+            return true;
+        } else {
+            $('#' + controlId).text("Solo acepta números");
+            $('#' + controlId).css({ "color": "red" });
+            return false;
+        }
+    }
+
+    //CORREO
+    function ValidarCorreo(str, controlId) {
+        var regexLetters = /^[a-zA-Z0-9\.\_]+\@@{1}[a-zA-Z0-9]+\.\w{2,4}$/;
+
+        if (!regexLetters.test(str)) {
+            $('#' + controlId).text("Correo Invalido");
+            $('#' + controlId).css({ "color": "red" });
+        } else {
+            $('#' + controlId).text("");
+        }
+    }
+
+    function matchEmail() {
+        var email1 = document.getElementById("txtEmail");
+        var email2 = document.getElementById("txtConfirmEmail");
+
+        if (email1.value == email2.value) {
+            email2.style.borderColor = "green";
+            email1.style.borderColor = "green";
+            $('#lblConfirmEmail').text("");
+        } else {
+            email2.style.borderColor = "red";
+            email1.style.borderColor = "red";
+            $('#lblConfirmEmail').text("Los Correos no coinciden");
+        }
+    }
+</script>

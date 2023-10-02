@@ -1,0 +1,4 @@
+Hubo un error al insertar el Empleado: Ronan Klein Error: An error occurred while executing the command definition. See the inner exception for details.
+Hubo un error al insertar el Empleado: Stone Bond Error: An error occurred while executing the command definition. See the inner exception for details.
+Hubo un error al insertar el Empleado: Kyle Pierce Error: An error occurred while executing the command definition. See the inner exception for details.
+Hubo un error al insertar el Empleado: Linus Roach Error: An error occurred while executing the command definition. See the inner exception for details.

@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAll</h2>
+
+
+<button type="button" class="btn btn-success" onclick="ShowModal();">Add New Employee</button>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered" id="tableEmpleado">
+            <thead>
+                <tr>
+                    <th>Editar</th>
+                    <th>IdMateria</th>
+                    <th>Nombre</th>
+                    <th>Costo</th>
+                    <th>Creditos</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalFormulario" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <label>IdEmpleado</label>
+                <input type="text" id="txtIdEmpleado" class="form-control" placeholder="IdEmpleado" />
+
+                <label>Nombre</label>
+                <input type="text" id="txtNumeroEmpleado" class="form-control" placeholder="Numero Empleado" />
+
+                <label>RFC</label>
+                <input type="text" id="txtRFC" class="form-control" placeholder="RFC" />
+
+                <select id="ddlEmpresa" class="form-control">
+                    <option value="0">Seleccione una empresa</option>
+                </select>
+                <br />
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="Guardar()" class="btn btn-success">Guardar</button>
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        GetAll();
+
+    });
+
+    function GetAll() {
+        $.ajax({
+            url: "/Empleado1/Get",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+                $.each(result.Objects, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.IdEmpleado + '</td>';
+                    html += '<td>' + item.NumeroEmpleado + '</td>';
+                    html += '<td>' + item.RFC + '</td>';
+                    html += '<td>' + item.Nombre + '</td>';
+                    html += '<td>' + item.ApellidoPaterno + '</td>';
+                    html += '<td><a href="#" class="text-primary" onclick="return GetById(' + item.IdEmpleado + ')">Edit</a> | <a href="#" class="text-primary" onclick="Delele(' + item.IdEmpleado + ')">Delete</a></td>';
+                    html += '</tr>';
+                });
+                $('#tableEmpleado tbody').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    function GetById(IdEmpleado) {
+
+        $.ajax({
+            url: "/Home/GetById/" + IdEmpleado,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#EmployeeID').val(result.EmployeeID);
+                $('#Name').val(result.Name);
+                $('#Age').val(result.Age);
+                $('#State').val(result.State);
+                $('#Country').val(result.Country);
+
+                $('#myModal').modal('show');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+
+    function GetEmpresas() {
+        $.ajax({
+            url: "/Empleado1/GetEmpresas",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+
+                var ddlEmpresa = $("#ddlEmpresa");
+
+                //$("#ddlEstado").append('<option value = "0">' + 'Seleccione un Estado' + '</option>');
+                $.each(result.Objects, function (i, empresas) {
+                    ddlEmpresa.append('<option value = "'
+                        + empresas.IdEmpresa + '">'
+                        + empresas.Nombre + '</option>');
+                });
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    function ShowModal() {
+        $('#modalFormulario').modal('show')
+        GetEmpresas();
+    }
+
+    function Guardar() {
+        var txtIdEmpleado = $("#txtIdEmpleado").val();
+
+        var action = "";
+
+        if (txtIdEmpleado == "") {
+            //add
+            action="Add"
+        }
+        else {
+            //Update
+            action="Update"
+
+        }
+
+
+        //crear un json
+
+        var rol = {
+            IdRol: $("#txtIdEmpleado").val(),
+            Nombre: $("#txtNumeroEmpleado").val(),
+            Roles: null
+        };
+
+        $.ajax({
+            url: "/Empleado1/" + action,
+            data: JSON.stringify(rol),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                GetAll();
+                $('#myModal').modal('hide');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+      
+    }
+
+
+</script>
